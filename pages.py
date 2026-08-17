@@ -1718,6 +1718,31 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </div>
+<div class="modal-bg" id="modal-support-dev" style="z-index:9999">
+  <div class="modal-v2" style="max-width:440px">
+    <div class="modal-v2-head" style="background:linear-gradient(155deg,rgba(236,72,153,.16) 0%,transparent 65%)">
+      <div class="modal-v2-icon" style="background:linear-gradient(135deg,#EC4899,#F472B6)"><i class="ti ti-heart"></i></div>
+      <div class="modal-v2-title">حمایت از سازنده</div>
+      <div class="modal-v2-sub">اگه این پروژه به دردت خورد، یه حمایت کوچیک انگیزه‌مون رو چند برابر می‌کنه</div>
+    </div>
+    <div class="modal-v2-body">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+        <a href="https://github.com/arvin341az-glitch/RVG" target="_blank" rel="noopener" class="btn btn-o" style="justify-content:flex-start;gap:10px;text-decoration:none">
+          <i class="ti ti-brand-github"></i> استار در گیت‌هاب
+        </a>
+        <a href="https://t.me/CodeBoxo" target="_blank" rel="noopener" class="btn btn-o" style="justify-content:flex-start;gap:10px;text-decoration:none">
+          <i class="ti ti-brand-telegram"></i> عضویت در تلگرام
+        </a>
+        <a href="https://railwayx3ui.page.gd/wallet/donate.html" target="_blank" rel="noopener" class="btn btn-p" style="justify-content:flex-start;gap:10px;text-decoration:none">
+          <i class="ti ti-coin"></i> دونیت کردن
+        </a>
+      </div>
+      <div class="modal-v2-footer">
+        <button class="btn btn-o" id="support-dev-dismiss-btn" onclick="handleSupportDevDismiss()" style="flex:1;justify-content:center">ولم کن حوصله این کار‌ها رو ندارم</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal-bg" id="modal-links">
   <div class="modal-v2" style="max-width:520px;display:flex;flex-direction:column;max-height:88vh;overflow:hidden">
     <div class="lmodal-head" style="flex-shrink:0">
@@ -3019,6 +3044,17 @@ function navTo(name){
 document.querySelectorAll('.nav-it').forEach(el=>el.addEventListener('click',()=>navTo(el.dataset.pg)));
 function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
+let supportDevDismissCount=0;
+const supportDevDismissTexts=['د اخه مگه دست خودته:(','نکن مشتی نداریمااااا'];
+function handleSupportDevDismiss(){
+  supportDevDismissCount++;
+  if(supportDevDismissCount>=3){
+    closeModal('modal-support-dev');
+    localStorage.setItem('rvg-support-dev-seen','true');
+    return;
+  }
+  document.getElementById('support-dev-dismiss-btn').textContent=supportDevDismissTexts[supportDevDismissCount-1];
+}
 let prevTraf=0,ch1,ch2,ch3;
 async function fetchStats(){
   try{
@@ -4244,6 +4280,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   } catch(e) {
     console.error('modal error:', e);
+  }
+
+  try {
+    if (localStorage.getItem('rvg-support-dev-seen') !== 'true') {
+      openModal('modal-support-dev');
+    }
+  } catch(e) {
+    console.error('support modal error:', e);
   }
 
   fetchStats();
